@@ -535,7 +535,7 @@ end
 
 
 function RESET_SKY_ANIMAL()
-    gg.alert( لازم تكون فاتح حيوان السحاب ‌:⁠-⁠[⁩)
+    gg.alert(" لازم تكون فاتح حيوان السحاب ‌:⁠-⁠["⁩)
     gg.clearResults()
     gg.searchNumber("120;70~150", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
     local results = gg.getResults(100000)
