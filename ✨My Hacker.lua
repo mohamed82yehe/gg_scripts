@@ -37,7 +37,7 @@ function mainMenu()
     if main == 1 then
         menuState.main = false
         menuState.wahmi = true
-        HOME()
+        WAHMI()
     elseif main == 2 then
         menuState.main = false
         menuState.farm = true
