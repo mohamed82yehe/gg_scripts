@@ -446,6 +446,7 @@ function CLOUD_ISLAND_MENU()
         "🌳 تصفير أشجار السحاب",
         "🍩 تصفير كشك المعجنات المنشورية",
         "👗 تصفير بوتيك السحاب",
+        "🦊 تصفير حيوانات السحاب",
         "💫 عرض منتجات السحاب بالكشك",
         "↩️ رجوع"
     }, nil, "☁️ قائمة جزيرة السحاب")
@@ -461,8 +462,10 @@ function CLOUD_ISLAND_MENU()
     elseif menu == 4 then
         RESET_CLOUD_BOUTIQUE()
     elseif menu == 5 then
+        RESET_SKY_ANIMAL()
+     elseif menu == 6 then
         SKY_SHOP()
-    elseif menu == 6 then
+     elseif menu == 7 then
         menuState.cloudIsland = false
         menuState.main = true
         mainMenu()
@@ -529,6 +532,43 @@ function RESET_CLOUD_TREES()
     gg.clearResults()
     gg.toast("✅ تم تصفير أشجار السحاب 🌳")
 end
+
+
+function RESET_SKY_ANIMAL()
+    gg.alert( لازم تكون فاتح حيوان السحاب ⁦:⁠-⁠[⁩)
+    gg.clearResults()
+    gg.searchNumber("120;70~150", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local results = gg.getResults(100000)
+    if #results > 0 then
+        gg.editAll("1", gg.TYPE_DOUBLE)
+    end
+    
+    gg.clearResults()
+    gg.searchNumber("120;90~150", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local results = gg.getResults(100000)
+    if #results > 0 then
+        gg.editAll("1", gg.TYPE_DOUBLE)
+    end
+     
+         gg.clearResults()
+    gg.searchNumber("120;100~150", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local results = gg.getResults(100000)
+    if #results > 0 then
+        gg.editAll("1", gg.TYPE_DOUBLE)
+    end
+    
+    gg.clearResults()
+    gg.searchNumber("40;70~200", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
+    local results = gg.getResults(100000)
+    if #results > 0 then
+        gg.editAll("1", gg.TYPE_DOUBLE)
+    end
+     
+    gg.processResume()
+    gg.clearResults()
+    gg.toast("✅ تم تصفير حيوانات السحاب 🦊")
+end
+
 
 function RESET_PRISM_DONUTS()
     gg.clearResults()
