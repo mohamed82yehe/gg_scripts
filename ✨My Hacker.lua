@@ -444,9 +444,9 @@ function CLOUD_ISLAND_MENU()
     local menu = gg.choice({
         "🍄 تصفير زرع السحاب",
         "🌳 تصفير أشجار السحاب",
+        "🦊 تصفير حيوانات السحاب",
         "🍩 تصفير كشك المعجنات المنشورية",
         "👗 تصفير بوتيك السحاب",
-        "🦊 تصفير حيوانات السحاب",
         "💫 عرض منتجات السحاب بالكشك",
         "↩️ رجوع"
     }, nil, "☁️ قائمة جزيرة السحاب")
@@ -458,11 +458,11 @@ function CLOUD_ISLAND_MENU()
     elseif menu == 2 then
         RESET_CLOUD_TREES()
     elseif menu == 3 then
-        RESET_PRISM_DONUTS()
-    elseif menu == 4 then
-        RESET_CLOUD_BOUTIQUE()
-    elseif menu == 5 then
         RESET_SKY_ANIMAL()
+    elseif menu == 4 then
+        RESET_PRISM_DONUTS()
+    elseif menu == 5 then
+        RESET_CLOUD_BOUTIQUE()
      elseif menu == 6 then
         SKY_SHOP()
      elseif menu == 7 then
