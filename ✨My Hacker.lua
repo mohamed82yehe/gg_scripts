@@ -906,11 +906,10 @@ function YELLOW_SHOP_MENU()
 end
 
 function Searching_YELLOW()
-    -- البحث الأول مع تحديد نوع DOUBLE
     gg.clearResults()
     local search1 = '500537;2;19;3'
     local search2 = '500391;20115'
-    allResults = {} -- إعادة تهيئة المتغير
+    allResults = {}
 
     gg.searchNumber(search1, gg.TYPE_DOUBLE)
     local res1 = gg.getResults(100000)
@@ -922,7 +921,6 @@ function Searching_YELLOW()
     for i = 1, #res2 do table.insert(allResults, res2[i]) end
     gg.clearResults()
 
-    -- فحص وجود نتائج
     if #allResults == 0 then
         gg.alert("⚠️ لم يتم العثور على نتائج، سيتم عرض القائمة.")
         return
@@ -930,7 +928,6 @@ function Searching_YELLOW()
 
     gg.toast("🎉 تم جمع النتائج بنجاح")
 
-    -- تعديل القيم 2 و 3 إلى 9999
     local function modifyStaticValues()
        local modified = {}
        for i, v in ipairs(allResults) do
@@ -947,7 +944,6 @@ function Searching_YELLOW()
 
    modifyStaticValues()
 
-   -- استخراج نتائج الأكواد المحددة من النتائج المجمعة
    searchResults = {
        res500537 = {},
        res19 = {},
@@ -973,6 +969,7 @@ function Searching_YELLOW()
     
     searchPerformed = true
     gg.toast("تم تحضير النتائج للتعديل")
+    gg.setVisible(false)
 end
 
 function manualEdit()
@@ -991,7 +988,6 @@ function manualEdit()
     
     if not input then return end
     
-    -- تعيين القيمة الافتراضية 610015 لأي خانة فارغة أو غير رقمية
     for i = 1, 4 do
         local val = tonumber(input[i])
         codes[i] = val or 610015.0
@@ -1009,7 +1005,6 @@ function restoreOriginalValues()
     
     local anyRestored = false
     
-    -- استعادة القيم الأصلية مع التحويل إلى DOUBLE
     if #searchResults.res500537 > 0 then
         anyRestored = true
         for i, v in ipairs(searchResults.res500537) do
@@ -1056,15 +1051,13 @@ function applyOption(codes)
         return
     end
     
-    -- التحقق من وجود النتائج قبل التعديل
     local anyFound = false
     
-    -- تطبيق الأكواد على النتائج مع التحويل إلى DOUBLE
     if #searchResults.res500537 > 0 then
         anyFound = true
         for i, v in ipairs(searchResults.res500537) do
             v.value = codes[1] or 610015
-            v.value = v.value + 0.0 -- تأكيد التحويل إلى DOUBLE
+            v.value = v.value + 0.0
         end
         gg.setValues(searchResults.res500537)
     end
@@ -1105,773 +1098,584 @@ function applyOption(codes)
 end
 
 function showAnimalShippingProducts()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🐣 بيضة القرن - ريش النحام الوردي - بتلة خيزران - حليب غزال المحظوظ",
-            "🦃 قدم ديك رومي - ريشة يونيكورن - ريشة فينكس - مخمل رنة الاحتفال",
-            "🐎 شعر حصان عيد الحب - زيت اعماق البحر - ذيل ثعلب الحظ - صوف ألبكة وردية",
-            "🐟 سمكة مجمدة - وسادة الباندا الحمراء - نقشة نمر ساكورا - وسادة قضامة البحر",
-            "🦏 الكركدن المنحوت - وسادة رقبة الفيل - حقيبة هدية الكريسماس - حلوى قصب الكريسماس",
-            "💖 ريشة على شكل قلب - صوف متعدد الالوان",
-            "🔙 رجوع"
-        }, nil, "🐾 منتجات حيوانات الشحن")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({41055, 41057, 41061, 41073})
-        elseif choice == 2 then 
-            applyOption({41079, 41081, 41083, 41085})
-        elseif choice == 3 then 
-            applyOption({41087, 41091, 41093, 41095})
-        elseif choice == 4 then 
-            applyOption({41097, 41099, 41101, 41103})
-        elseif choice == 5 then 
-            applyOption({41105, 41107, 41109, 41111})
-        elseif choice == 6 then 
-            applyOption({41113, 41115, 41117, 41119})
-        elseif choice == 7 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🐣 بيضة القرن - ريش النحام الوردي - بتلة خيزران - حليب غزال المحظوظ",
+        "🦃 قدم ديك رومي - ريشة يونيكورن - ريشة فينكس - مخمل رنة الاحتفال",
+        "🐎 شعر حصان عيد الحب - زيت اعماق البحر - ذيل ثعلب الحظ - صوف ألبكة وردية",
+        "🐟 سمكة مجمدة - وسادة الباندا الحمراء - نقشة نمر ساكورا - وسادة قضامة البحر",
+        "🦏 الكركدن المنحوت - وسادة رقبة الفيل - حقيبة هدية الكريسماس - حلوى قصب الكريسماس",
+        "💖 ريشة على شكل قلب - صوف متعدد الالوان",
+        "🔙 رجوع"
+    }, nil, "🐾 منتجات حيوانات الشحن")
+    
+    
+    if choice == 1 then 
+        applyOption({41055, 41057, 41061, 41073})
+    elseif choice == 2 then 
+        applyOption({41079, 41081, 41083, 41085})
+    elseif choice == 3 then 
+        applyOption({41087, 41091, 41093, 41095})
+    elseif choice == 4 then 
+        applyOption({41097, 41099, 41101, 41103})
+    elseif choice == 5 then 
+        applyOption({41105, 41107, 41109, 41111})
+    elseif choice == 6 then 
+        applyOption({41113, 41115, 41117, 41119})
     end
+    gg.setVisible(false)
 end
 
+
 function showPuffedPastryMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🥐 1-4 أول 4 منتجات من آلة الفطائر المنفوخة",
-            "🧁 5-6 آخر منتجين من آلة الفطائر المنفوخة",
-            "↩️ رجوع"
-        }, nil, "🍪 آلة الفطائر المنفوخة")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({207801, 207802, 207803, 207804})
-        elseif choice == 2 then 
-            applyOption({207805, 207806, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🥐 1-4 أول 4 منتجات من آلة الفطائر المنفوخة",
+        "🧁 5-6 آخر منتجين من آلة الفطائر المنفوخة",
+        "↩️ رجوع"
+    }, nil, "🍪 آلة الفطائر المنفوخة")
+    
+    if choice == 1 then 
+        applyOption({207801, 207802, 207803, 207804})
+    elseif choice == 2 then 
+        applyOption({207805, 207806, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showAgedJuiceMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🍹 1-4 أول 4 منتجات من آلة عصير الفواكه المعتقة",
-            "🍷 5-6 آخر منتجين من آلة عصير الفواكه المعتقة",
-            "↩️ رجوع"
-        }, nil, "🍇 آلة عصير الفواكه المعتقة")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({208101, 208102, 208103, 208104})
-        elseif choice == 2 then 
-            applyOption({208105, 208106, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🍹 1-4 أول 4 منتجات من آلة عصير الفواكه المعتقة",
+        "🍷 5-6 آخر منتجين من آلة عصير الفواكه المعتقة",
+        "↩️ رجوع"
+    }, nil, "🍇 آلة عصير الفواكه المعتقة")
+    
+    if choice == 1 then 
+        applyOption({208101, 208102, 208103, 208104})
+    elseif choice == 2 then 
+        applyOption({208105, 208106, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showEternalFlowerMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🌸 1-4 أول 4 منتجات من آلة الزهرة الخالدة",
-            "💮 5-6 آخر منتجين من آلة الزهرة الخالدة",
-            "↩️ رجوع"
-        }, nil, "🌺 آلة الزهرة الخالدة")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({208301, 208302, 208303, 208304})
-        elseif choice == 2 then 
-            applyOption({208305, 208306, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🌸 1-4 أول 4 منتجات من آلة الزهرة الخالدة",
+        "💮 5-6 آخر منتجين من آلة الزهرة الخالدة",
+        "↩️ رجوع"
+    }, nil, "🌺 آلة الزهرة الخالدة")
+    
+    if choice == 1 then 
+        applyOption({208301, 208302, 208303, 208304})
+    elseif choice == 2 then 
+        applyOption({208305, 208306, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showCroissantMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🥐 1-4 أول 4 منتجات من آلة الكرواسون",
-            "🥖 5-6 آخر منتجين من آلة الكرواسون",
-            "↩️ رجوع"
-        }, nil, "🍞 آلة الكرواسون")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({208501, 208502, 208503, 208504})
-        elseif choice == 2 then 
-            applyOption({208505, 208506, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🥐 1-4 أول 4 منتجات من آلة الكرواسون",
+        "🥖 5-6 آخر منتجين من آلة الكرواسون",
+        "↩️ رجوع"
+    }, nil, "🍞 آلة الكرواسون")
+    
+    if choice == 1 then 
+        applyOption({208501, 208502, 208503, 208504})
+    elseif choice == 2 then 
+        applyOption({208505, 208506, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showGlovesMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🧤 1-4 أول 4 منتجات من آلة القفازات",
-            "🧦 5-6 آخر منتجين من آلة القفازات",
-            "↩️ رجوع"
-        }, nil, "🧵 آلة القفازات")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({208801, 208802, 208803, 208804})
-        elseif choice == 2 then 
-            applyOption({208805, 208806, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🧤 1-4 أول 4 منتجات من آلة القفازات",
+        "🧦 5-6 آخر منتجين من آلة القفازات",
+        "↩️ رجوع"
+    }, nil, "🧵 آلة القفازات")
+    
+    if choice == 1 then 
+        applyOption({208801, 208802, 208803, 208804})
+    elseif choice == 2 then 
+        applyOption({208805, 208806, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showMilkPuddingMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🍮 1-4 أول 4 منتجات من آلة المهلبية",
-            "🥛 5-6 آخر منتجين من آلة المهلبية",
-            "↩️ رجوع"
-        }, nil, "🍶 آلة المهلبية")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({208901, 208902, 208903, 208904})
-        elseif choice == 2 then 
-            applyOption({208905, 208906, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🍮 1-4 أول 4 منتجات من آلة المهلبية",
+        "🥛 5-6 آخر منتجين من آلة المهلبية",
+        "↩️ رجوع"
+    }, nil, "🍶 آلة المهلبية")
+    
+    if choice == 1 then 
+        applyOption({208901, 208902, 208903, 208904})
+    elseif choice == 2 then 
+        applyOption({208905, 208906, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showMagicWandMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🪄 1-4 أول 4 منتجات من آلة العصا السحرية",
-            "✨ 5-6 آخر منتجين من آلة العصا السحرية",
-            "↩️ رجوع"
-        }, nil, "🔮 آلة العصا السحرية")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({209201, 209202, 209203, 209204})
-        elseif choice == 2 then 
-            applyOption({209205, 209206, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🪄 1-4 أول 4 منتجات من آلة العصا السحرية",
+        "✨ 5-6 آخر منتجين من آلة العصا السحرية",
+        "↩️ رجوع"
+    }, nil, "🔮 آلة العصا السحرية")
+    
+    if choice == 1 then 
+        applyOption({209201, 209202, 209203, 209204})
+    elseif choice == 2 then 
+        applyOption({209205, 209206, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showCottonCandyMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🍭 1-4 أول 4 منتجات من آلة حلوى غزل البنات",
-            "🍬 5-6 آخر منتجين من آلة حلوى غزل البنات",
-            "↩️ رجوع"
-        }, nil, "🎪 آلة حلوى غزل البنات")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({209401, 209402, 209403, 209404})
-        elseif choice == 2 then 
-            applyOption({209405, 209406, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🍭 1-4 أول 4 منتجات من آلة حلوى غزل البنات",
+        "🍬 5-6 آخر منتجين من آلة حلوى غزل البنات",
+        "↩️ رجوع"
+    }, nil, "🎪 آلة حلوى غزل البنات")
+    
+    if choice == 1 then 
+        applyOption({209401, 209402, 209403, 209404})
+    elseif choice == 2 then 
+        applyOption({209405, 209406, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showParfaitMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🍧 1-4 أول 4 منتجات من آلة البارفيه",
-            "🍨 5-6 آخر منتجين من آلة البارفيه",
-            "↩️ رجوع"
-        }, nil, "🍦 آلة البارفيه")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({209601, 209602, 209603, 209604})
-        elseif choice == 2 then 
-            applyOption({209605, 209606, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🍧 1-4 أول 4 منتجات من آلة البارفيه",
+        "🍨 5-6 آخر منتجين من آلة البارفيه",
+        "↩️ رجوع"
+    }, nil, "🍦 آلة البارفيه")
+    
+    if choice == 1 then 
+        applyOption({209601, 209602, 209603, 209604})
+    elseif choice == 2 then 
+        applyOption({209605, 209606, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showCreamPuffMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🧁 1-4 أول 4 منتجات من آلة كريم باف",
-            "🍰 5-6 آخر منتجين من آلة كريم باف",
-            "↩️ رجوع"
-        }, nil, "🧈 آلة كريم باف")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({209801, 209802, 209803, 209804})
-        elseif choice == 2 then 
-            applyOption({209805, 209806, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🧁 1-4 أول 4 منتجات من آلة كريم باف",
+        "🍰 5-6 آخر منتجين من آلة كريم باف",
+        "↩️ رجوع"
+    }, nil, "🧈 آلة كريم باف")
+    
+    if choice == 1 then 
+        applyOption({209801, 209802, 209803, 209804})
+    elseif choice == 2 then 
+        applyOption({209805, 209806, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showSnowballMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "❄️ 1-4 أول 4 منتجات من آلة كرة الثلج",
-            "⛄ 5-6 آخر منتجين من آلة كرة الثلج",
-            "↩️ رجوع"
-        }, nil, "🌨️ آلة كرة الثلج")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({210001, 210002, 210003, 210004})
-        elseif choice == 2 then 
-            applyOption({210005, 210006, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "❄️ 1-4 أول 4 منتجات من آلة كرة الثلج",
+        "⛄ 5-6 آخر منتجين من آلة كرة الثلج",
+        "↩️ رجوع"
+    }, nil, "🌨️ آلة كرة الثلج")
+    
+    if choice == 1 then 
+        applyOption({210001, 210002, 210003, 210004})
+    elseif choice == 2 then 
+        applyOption({210005, 210006, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showDorayakiMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🥞 1-4 أول 4 منتجات من آلة الدوراياكي",
-            "🍘 5-6 آخر منتجين من آلة الدوراياكي",
-            "↩️ رجوع"
-        }, nil, "🍡 آلة الدوراياكي")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({209301, 209302, 209303, 209304})
-        elseif choice == 2 then 
-            applyOption({209305, 209306, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🥞 1-4 أول 4 منتجات من آلة الدوراياكي",
+        "🍘 5-6 آخر منتجين من آلة الدوراياكي",
+        "↩️ رجوع"
+    }, nil, "🍡 آلة الدوراياكي")
+    
+    if choice == 1 then 
+        applyOption({209301, 209302, 209303, 209304})
+    elseif choice == 2 then 
+        applyOption({209305, 209306, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showToothpasteMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🦷 1-4 أول 4 منتجات من آلة معجون الأسنان",
-            "🧴 5-6 آخر منتجين من آلة معجون الأسنان",
-            "↩️ رجوع"
-        }, nil, "🧼 آلة معجون الأسنان")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({210201, 210202, 210203, 210204})
-        elseif choice == 2 then 
-            applyOption({210205, 210206, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🦷 1-4 أول 4 منتجات من آلة معجون الأسنان",
+        "🧴 5-6 آخر منتجين من آلة معجون الأسنان",
+        "↩️ رجوع"
+    }, nil, "🧼 آلة معجون الأسنان")
+    
+    if choice == 1 then 
+        applyOption({210201, 210202, 210203, 210204})
+    elseif choice == 2 then 
+        applyOption({210205, 210206, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showTreasureMachineProducts()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🍪 آلة الفطائر المنفوخة",
-            "🍹 آلة عصير الفواكه المعتقة",
-            "🌸 آلة الزهرة الخالدة",
-            "🥐 آلة الكرواسون",
-            "🧤 آلة القفازات",
-            "🍮 آلة المهلبية",
-            "🪄 آلة العصا السحرية",
-            "🍭 آلة حلوى غزل البنات",
-            "🍧 آلة البارفيه",
-            "🧁 آلة كريم باف",
-            "❄️ آلة كرة الثلج",
-            "🥞 آلة الدوراياكي",
-            "🦷 آلة معجون الأسنان",
-            "🔙 رجوع"
-        }, nil, "🎰 منتجات آلات الكنز")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            showPuffedPastryMachine()
-        elseif choice == 2 then 
-            showAgedJuiceMachine()
-        elseif choice == 3 then 
-            showEternalFlowerMachine()
-        elseif choice == 4 then 
-            showCroissantMachine()
-        elseif choice == 5 then 
-            showGlovesMachine()
-        elseif choice == 6 then 
-            showMilkPuddingMachine()
-        elseif choice == 7 then 
-            showMagicWandMachine()
-        elseif choice == 8 then 
-            showCottonCandyMachine()
-        elseif choice == 9 then 
-            showParfaitMachine()
-        elseif choice == 10 then 
-            showCreamPuffMachine()
-        elseif choice == 11 then 
-            showSnowballMachine()
-        elseif choice == 12 then 
-            showDorayakiMachine()
-        elseif choice == 13 then 
-            showToothpasteMachine()
-        elseif choice == 14 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🍪 آلة الفطائر المنفوخة",
+        "🍹 آلة عصير الفواكه المعتقة",
+        "🌸 آلة الزهرة الخالدة",
+        "🥐 آلة الكرواسون",
+        "🧤 آلة القفازات",
+        "🍮 آلة المهلبية",
+        "🪄 آلة العصا السحرية",
+        "🍭 آلة حلوى غزل البنات",
+        "🍧 آلة البارفيه",
+        "🧁 آلة كريم باف",
+        "❄️ آلة كرة الثلج",
+        "🥞 آلة الدوراياكي",
+        "🦷 آلة معجون الأسنان",
+        "🔙 رجوع"
+    }, nil, "🎰 منتجات آلات الكنز")
+    
+    if choice == 1 then 
+        showPuffedPastryMachine()
+    elseif choice == 2 then 
+        showAgedJuiceMachine()
+    elseif choice == 3 then 
+        showEternalFlowerMachine()
+    elseif choice == 4 then 
+        showCroissantMachine()
+    elseif choice == 5 then 
+        showGlovesMachine()
+    elseif choice == 6 then 
+        showMilkPuddingMachine()
+    elseif choice == 7 then 
+        showMagicWandMachine()
+    elseif choice == 8 then 
+        showCottonCandyMachine()
+    elseif choice == 9 then 
+        showParfaitMachine()
+    elseif choice == 10 then 
+        showCreamPuffMachine()
+    elseif choice == 11 then 
+        showSnowballMachine()
+    elseif choice == 12 then 
+        showDorayakiMachine()
+    elseif choice == 13 then 
+        showToothpasteMachine()
     end
+    gg.setVisible(false)
 end
 
 function showPowredProducts()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🐄 مطور البقرة",
-            "🐃 مطور الثور",
-            "🦌 مطور الغزال",
-            "🐑 مطور الخاروف",
-            "🐓 مطور الدجاج",
-            "🐇 مطور الأرنب",
-            "🦚 مطور الطاووس",
-            "🦃 مطور الديك الرومي",
-            "🦩 مطور النعامة",
-            "🥛 مطور معمل الألبان",
-            "🌪️ مطور الطاحونة",
-            "🥖 مطور المخبز",
-            "🍷 مطور آلة العصير",
-            "🍾 مطور العصارة",
-            "🍓 مطور آلة المربى",
-            "🍅 مطور آلة الصلصة",
-            "🍔 مطور آلة البرغر",
-            "🍬 مطور آلة صنع الحلوى",
-            "🍭 مطور آلة السكر",
-            "💐 مطور آلة باقة الورود",
-            "🥩 مطور آلة البسطرمة",
-            "🧸 مطور آلة الدمى",
-            "🔙 رجوع"
-        }, nil, "🌀 منتجات المطورات")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({22001, 22003, 22004, 610015})
-        elseif choice == 2 then 
-            applyOption({22067, 22068, 22069, 22070})
-        elseif choice == 3 then 
-            applyOption({22055, 22056, 22058, 610015})
-        elseif choice == 4 then 
-            applyOption({22075, 22076, 22077, 22078})
-        elseif choice == 5 then 
-            applyOption({22021, 22022, 22023, 22025})
-        elseif choice == 6 then 
-            applyOption({22035, 22036, 22037, 22038})
-        elseif choice == 7 then 
-            applyOption({22079, 22080, 22081, 22082})
-        elseif choice == 8 then 
-            applyOption({22089, 22090, 22091, 22092})
-        elseif choice == 9 then 
-            applyOption({22085, 22086, 22087, 22088})
-        elseif choice == 10 then 
-            applyOption({22002, 22005, 22006, 22007})
-        elseif choice == 11 then 
-            applyOption({22009, 22010, 22024, 610015})
-        elseif choice == 12 then 
-            applyOption({22063, 22064, 22066, 610015})
-        elseif choice == 13 then 
-            applyOption({22031, 22032, 22034, 610015})
-        elseif choice == 14 then 
-            applyOption({22043, 22044, 22045, 610015})
-        elseif choice == 15 then 
-            applyOption({22026, 22027, 22029, 610015})
-        elseif choice == 16 then 
-            applyOption({22047, 22048, 22050, 610015})
-        elseif choice == 17 then 
-            applyOption({22039, 22040, 22042, 610015})
-        elseif choice == 18 then 
-            applyOption({22059, 22060, 22062, 610015})
-        elseif choice == 19 then 
-            applyOption({22051, 22052, 22054, 610015})
-        elseif choice == 20 then 
-            applyOption({22071, 22072, 22073, 22074})
-        elseif choice == 21 then 
-            applyOption({22098, 22099, 22100, 22101})
-        elseif choice == 22 then 
-            applyOption({22094, 22095, 22096, 22097})
-        elseif choice == 23 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🐄 مطور البقرة",
+        "🐃 مطور الثور",
+        "🦌 مطور الغزال",
+        "🐑 مطور الخاروف",
+        "🐓 مطور الدجاج",
+        "🐇 مطور الأرنب",
+        "🦚 مطور الطاووس",
+        "🦃 مطور الديك الرومي",
+        "🦩 مطور النعامة",
+        "🥛 مطور معمل الألبان",
+        "🌪️ مطور الطاحونة",
+        "🥖 مطور المخبز",
+        "🍷 مطور آلة العصير",
+        "🍾 مطور العصارة",
+        "🍓 مطور آلة المربى",
+        "🍅 مطور آلة الصلصة",
+        "🍔 مطور آلة البرغر",
+        "🍬 مطور آلة صنع الحلوى",
+        "🍭 مطور آلة السكر",
+        "💐 مطور آلة باقة الورود",
+        "🥩 مطور آلة البسطرمة",
+        "🧸 مطور آلة الدمى",
+        "🔙 رجوع"
+    }, nil, "🌀 منتجات المطورات")
+    
+    if choice == 1 then 
+        applyOption({22001, 22003, 22004, 610015})
+    elseif choice == 2 then 
+        applyOption({22067, 22068, 22069, 22070})
+    elseif choice == 3 then 
+        applyOption({22055, 22056, 22058, 610015})
+    elseif choice == 4 then 
+        applyOption({22075, 22076, 22077, 22078})
+    elseif choice == 5 then 
+        applyOption({22021, 22022, 22023, 22025})
+    elseif choice == 6 then 
+        applyOption({22035, 22036, 22037, 22038})
+    elseif choice == 7 then 
+        applyOption({22079, 22080, 22081, 22082})
+    elseif choice == 8 then 
+        applyOption({22089, 22090, 22091, 22092})
+    elseif choice == 9 then 
+        applyOption({22085, 22086, 22087, 22088})
+    elseif choice == 10 then 
+        applyOption({22002, 22005, 22006, 22007})
+    elseif choice == 11 then 
+        applyOption({22009, 22010, 22024, 610015})
+    elseif choice == 12 then 
+        applyOption({22063, 22064, 22066, 610015})
+    elseif choice == 13 then 
+        applyOption({22031, 22032, 22034, 610015})
+    elseif choice == 14 then 
+        applyOption({22043, 22044, 22045, 610015})
+    elseif choice == 15 then 
+        applyOption({22026, 22027, 22029, 610015})
+    elseif choice == 16 then 
+        applyOption({22047, 22048, 22050, 610015})
+    elseif choice == 17 then 
+        applyOption({22039, 22040, 22042, 610015})
+    elseif choice == 18 then 
+        applyOption({22059, 22060, 22062, 610015})
+    elseif choice == 19 then 
+        applyOption({22051, 22052, 22054, 610015})
+    elseif choice == 20 then 
+        applyOption({22071, 22072, 22073, 22074})
+    elseif choice == 21 then 
+        applyOption({22098, 22099, 22100, 22101})
+    elseif choice == 22 then 
+        applyOption({22094, 22095, 22096, 22097})
     end
+    gg.setVisible(false)
 end
 
 function showGrills()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🔥 لحم مشوي - ديك رومي - جمبري- لحم مشوي",
-            "🔥 بطاطا مشوية - فطر - ثوم - باذنجان",
-            "↩️ رجوع"
-        }, nil, "🔥 آلة المشويات")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({20116, 20163, 20165, 20166})
-        elseif choice == 2 then 
-            applyOption({20169, 20168, 21067, 20170})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🔥 لحم مشوي - ديك رومي - جمبري- لحم مشوي",
+        "🔥 بطاطا مشوية - فطر - ثوم - باذنجان",
+        "↩️ رجوع"
+    }, nil, "🔥 آلة المشويات")
+    
+    if choice == 1 then 
+        applyOption({20116, 20163, 20165, 20166})
+    elseif choice == 2 then 
+        applyOption({20169, 20168, 21067, 20170})
     end
+    gg.setVisible(false)
 end
 
 function showSwimming()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "⚓ البطة - الاناناس - الاوزة",
-            "⚓ البطيخ - افوكادو",
-            "↩️ رجوع"
-        }, nil, "⚓ آلة دولاب السباحة")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({205104, 205105, 205103, 610015})
-        elseif choice == 2 then 
-            applyOption({205101, 205102, 610015, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "⚓ البطة - الاناناس - الاوزة",
+        "⚓ البطيخ - افوكادو",
+        "↩️ رجوع"
+    }, nil, "⚓ آلة دولاب السباحة")
+    
+    if choice == 1 then 
+        applyOption({205104, 205105, 205103, 610015})
+    elseif choice == 2 then 
+        applyOption({205101, 205102, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showFactoryProducts()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🔧 صامولة - برغى ملولب - مسمار مفتاح برغي",
-            "⭐ سبيكة نحاسية - فضية - حديد - ذهبية",
-            "💎 ألماس - مفك براغي",
-            "🌳 اسطوانة خشبية - خشبة - لوح خشبي - نشارة خشب",
-            "🌳 خشب البلوط - خشب الارز - خشب ساندرز",
-            "⛏️ حجر طيني- ملح البارود - كوارتز - خام نحاس",
-            "⛏️ خام حديد - ذهب - فضة - ألماس هائج",
-            "🏮 المرآة - وعاء خزفي - زمرد زجاجي - ياقوت زجاجي",
-            "🏮 حمشت ارجواني - زجاج ذهبي - زجاج صلب",
-            "🧺 اريج خشبي - علبة تجميل - مرآة تجميل - طاولة الزهور",
-            "🧱 حجر قرميد - انبوب ماء - شواء - قدر",
-            "💎 حجر الاساس دهبي - فضي - ألماس",
-            "👑 قرن وحيد القرن - تاج ذهبي",
-            "💊 كبسولة الحيوان - شاش - صندوق انقاذ - بلطة",
-            "💣 بارود - ديناميت - قنبلة - برميل بارود",
-            "🌰 كستناء - خيزران - اوراق شاي",
-            "🌳 اوراق التوت - مطاط - فاكهة دوريان",
-            "🔥 آلة المشويات",
-            "⚓ آلة دولاب السباحة",
-            "☕ مارش قهوة",
-            "🔙 رجوع"
-        }, nil, "👑 منتجات مصانع الجزيرة")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({620002, 620003, 620004, 620005})
-        elseif choice == 2 then 
-            applyOption({620007, 620008, 620009, 620010})
-        elseif choice == 3 then 
-            applyOption({620006, 620011, 610015, 610015})
-        elseif choice == 4 then 
-            applyOption({630001, 630002, 630003, 630005})
-        elseif choice == 5 then 
-            applyOption({8013, 8017, 8021, 610015})
-        elseif choice == 6 then 
-            applyOption({1901, 1909, 1902, 1903})
-        elseif choice == 7 then 
-            applyOption({1904, 1905, 1907, 1908})
-        elseif choice == 8 then 
-            applyOption({640001, 640002, 640003, 640004})
-        elseif choice == 9 then 
-            applyOption({640005, 640006, 640008, 610015})
-        elseif choice == 10 then 
-            applyOption({610004, 610005, 610006, 610007})
-        elseif choice == 11 then 
-            applyOption({610008, 610009, 610010, 610011})
-        elseif choice == 12 then 
-            applyOption({610012, 610013, 610014, 610015})
-        elseif choice == 13 then 
-            applyOption({610015, 3034, 610015, 3034})
-        elseif choice == 14 then 
-            applyOption({611001, 611002, 611003, 610015})
-        elseif choice == 15 then 
-            applyOption({619001, 619002, 619003, 619004})
-        elseif choice == 16 then 
-            applyOption({8003, 8005, 8007, 610015})
-        elseif choice == 17 then 
-            applyOption({8009, 8023, 8025, 610015})
-        elseif choice == 18 then 
-            showGrills()
-        elseif choice == 19 then 
-            showSwimming()
-        elseif choice == 20 then 
-            applyOption({203001, 203001, 203001, 203001})
-        elseif choice == 21 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🔧 صامولة - برغى ملولب - مسمار مفتاح برغي",
+        "⭐ سبيكة نحاسية - فضية - حديد - ذهبية",
+        "💎 ألماس - مفك براغي",
+        "🌳 اسطوانة خشبية - خشبة - لوح خشبي - نشارة خشب",
+        "🌳 خشب البلوط - خشب الارز - خشب ساندرز",
+        "⛏️ حجر طيني- ملح البارود - كوارتز - خام نحاس",
+        "⛏️ خام حديد - ذهب - فضة - ألماس هائج",
+        "🏮 المرآة - وعاء خزفي - زمرد زجاجي - ياقوت زجاجي",
+        "🏮 حمشت ارجواني - زجاج ذهبي - زجاج صلب",
+        "🧺 اريج خشبي - علبة تجميل - مرآة تجميل - طاولة الزهور",
+        "🧱 حجر قرميد - انبوب ماء - شواء - قدر",
+        "💎 حجر الاساس دهبي - فضي - ألماس",
+        "👑 قرن وحيد القرن - تاج ذهبي",
+        "💊 كبسولة الحيوان - شاش - صندوق انقاذ - بلطة",
+        "💣 بارود - ديناميت - قنبلة - برميل بارود",
+        "🌰 كستناء - خيزران - اوراق شاي",
+        "🌳 اوراق التوت - مطاط - فاكهة دوريان",
+        "🔥 آلة المشويات",
+        "⚓ آلة دولاب السباحة",
+        "☕ مارش قهوة",
+        "🔙 رجوع"
+    }, nil, "👑 منتجات مصانع الجزيرة")
+    
+    if choice == 1 then 
+        applyOption({620002, 620003, 620004, 620005})
+    elseif choice == 2 then 
+        applyOption({620007, 620008, 620009, 620010})
+    elseif choice == 3 then 
+        applyOption({620006, 620011, 610015, 610015})
+    elseif choice == 4 then 
+        applyOption({630001, 630002, 630003, 630005})
+    elseif choice == 5 then 
+        applyOption({8013, 8017, 8021, 610015})
+    elseif choice == 6 then 
+        applyOption({1901, 1909, 1902, 1903})
+    elseif choice == 7 then 
+        applyOption({1904, 1905, 1907, 1908})
+    elseif choice == 8 then 
+        applyOption({640001, 640002, 640003, 640004})
+    elseif choice == 9 then 
+        applyOption({640005, 640006, 640008, 610015})
+    elseif choice == 10 then 
+        applyOption({610004, 610005, 610006, 610007})
+    elseif choice == 11 then 
+        applyOption({610008, 610009, 610010, 610011})
+    elseif choice == 12 then 
+        applyOption({610012, 610013, 610014, 610015})
+    elseif choice == 13 then 
+        applyOption({610015, 3034, 610015, 3034})
+    elseif choice == 14 then 
+        applyOption({611001, 611002, 611003, 610015})
+    elseif choice == 15 then 
+        applyOption({619001, 619002, 619003, 619004})
+    elseif choice == 16 then 
+        applyOption({8003, 8005, 8007, 610015})
+    elseif choice == 17 then 
+        applyOption({8009, 8023, 8025, 610015})
+    elseif choice == 18 then 
+        showGrills()
+    elseif choice == 19 then 
+        showSwimming()
+    elseif choice == 20 then 
+        applyOption({203001, 203001, 203001, 203001})
     end
+    gg.setVisible(false)
 end
 
 function showFountain()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "دبوس وردة - سمكة الشمس - لؤلؤة القمر - نجمة النجوم",
-            "أخشاب الطفو - جوهر المياه - باقة خضراء - نسغ جوز الهند",
-            "جرعة بديلة صغيرة - جرعة بديلة كبيرة",
-            "↩️ رجوع"
-        }, nil, "?? نافورة الوفرة")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({3171105, 3171106, 3171107, 3171108})
-        elseif choice == 2 then 
-            applyOption({3171009, 3171110, 3171111, 3171112})
-        elseif choice == 3 then 
-            applyOption({3171114, 3171115, 610015, 610015})
-        elseif choice == 4 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "دبوس وردة - سمكة الشمس - لؤلؤة القمر - نجمة النجوم",
+        "أخشاب الطفو - جوهر المياه - باقة خضراء - نسغ جوز الهند",
+        "جرعة بديلة صغيرة - جرعة بديلة كبيرة",
+        "↩️ رجوع"
+    }, nil, "?? نافورة الوفرة")
+    
+    if choice == 1 then 
+        applyOption({3171105, 3171106, 3171107, 3171108})
+    elseif choice == 2 then 
+        applyOption({3171009, 3171110, 3171111, 3171112})
+    elseif choice == 3 then 
+        applyOption({3171114, 3171115, 610015, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showSashemi()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "سكلوب - اورشين - سلمون - حبار",
-            "اخطبوط - سلطعون - ماكريل - قريدس",
-            "↩️ رجوع"
-        }, nil, "🥡 آلة الساشيمي")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({203501, 203502, 203503, 203504})
-        elseif choice == 2 then 
-            applyOption({203505, 203506, 203507, 203508})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "سكلوب - اورشين - سلمون - حبار",
+        "اخطبوط - سلطعون - ماكريل - قريدس",
+        "↩️ رجوع"
+    }, nil, "🥡 آلة الساشيمي")
+    
+    if choice == 1 then 
+        applyOption({203501, 203502, 203503, 203504})
+    elseif choice == 2 then 
+        applyOption({203505, 203506, 203507, 203508})
     end
+    gg.setVisible(false)
 end
 
 function showLightFlower()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "نرجس - سرخس - بابونج - زهرة زهرية",
-            "زهرة العسل - لوتس - زهرة بيضاء",
-            "↩️ رجوع"
-        }, nil, "🏵️ آلة الزهرة الضوئي")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({203401, 203402, 203403, 203404})
-        elseif choice == 2 then 
-            applyOption({203405, 203406, 203407, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "نرجس - سرخس - بابونج - زهرة زهرية",
+        "زهرة العسل - لوتس - زهرة بيضاء",
+        "↩️ رجوع"
+    }, nil, "🏵️ آلة الزهرة الضوئي")
+    
+    if choice == 1 then 
+        applyOption({203401, 203402, 203403, 203404})
+    elseif choice == 2 then 
+        applyOption({203405, 203406, 203407, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showBoats()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "بط اصفر - الاوزة - نعامة",
-            "طاووس - نورس ميو - ببغاء",
-            "↩️ رجوع"
-        }, nil, "🦜 آلة القوارب")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({203601, 203602, 203603, 610015})
-        elseif choice == 2 then 
-            applyOption({203604, 203605, 203606, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "بط اصفر - الاوزة - نعامة",
+        "طاووس - نورس ميو - ببغاء",
+        "↩️ رجوع"
+    }, nil, "🦜 آلة القوارب")
+    
+    if choice == 1 then 
+        applyOption({203601, 203602, 203603, 610015})
+    elseif choice == 2 then 
+        applyOption({203604, 203605, 203606, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showUmbrella()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "عشب البحر - الكيوي - الشمام - البطيخ",
-            "قوس قزح - ندفة المياه - قنفذ البحر - المحار العملاقة",
-            "↩️ رجوع"
-        }, nil, "🌂 آلة المظلات")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({204001, 204002, 204003, 204004})
-        elseif choice == 2 then 
-            applyOption({204005, 204006, 204007, 204008})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "عشب البحر - الكيوي - الشمام - البطيخ",
+        "قوس قزح - ندفة المياه - قنفذ البحر - المحار العملاقة",
+        "↩️ رجوع"
+    }, nil, "🌂 آلة المظلات")
+    
+    if choice == 1 then 
+        applyOption({204001, 204002, 204003, 204004})
+    elseif choice == 2 then 
+        applyOption({204005, 204006, 204007, 204008})
     end
+    gg.setVisible(false)
 end
 
 function showTishert()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "الزهور الوردية - الزرقاء - عباد الشمس - الدب",
-            "الطحالب - زهرة الفقاعات - الحبار",
-            "↩️ رجوع"
-        }, nil, "👔 آلة القمصان")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({203901, 203902, 203903, 203904})
-        elseif choice == 2 then 
-            applyOption({203905, 203906, 203907, 610015})
-        elseif choice == 3 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "الزهور الوردية - الزرقاء - عباد الشمس - الدب",
+        "الطحالب - زهرة الفقاعات - الحبار",
+        "↩️ رجوع"
+    }, nil, "👔 آلة القمصان")
+    
+    if choice == 1 then 
+        applyOption({203901, 203902, 203903, 203904})
+    elseif choice == 2 then 
+        applyOption({203905, 203906, 203907, 610015})
     end
+    gg.setVisible(false)
 end
 
 function showResortMachine()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🥡 آلة الساشيمي",
-            "🏵️ آلة الزهرة الضوئية",
-            "🦜 آلة القوارب",
-            "🌂 آلة المظلات",
-            "👔 آلة القمصان",
-            "🔙 رجوع"
-        }, nil, "🌂 آلات المنتجع")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            showSashemi()
-        elseif choice == 2 then 
-            showLightFlower()
-        elseif choice == 3 then 
-            showBoats()
-        elseif choice == 4 then 
-            showUmbrella()
-        elseif choice == 5 then 
-            showTishert()
-        elseif choice == 6 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🥡 آلة الساشيمي",
+        "🏵️ آلة الزهرة الضوئية",
+        "🦜 آلة القوارب",
+        "🌂 آلة المظلات",
+        "👔 آلة القمصان",
+        "🔙 رجوع"
+    }, nil, "🌂 آلات المنتجع")
+    
+    if choice == 1 then 
+        showSashemi()
+    elseif choice == 2 then 
+        showLightFlower()
+    elseif choice == 3 then 
+        showBoats()
+    elseif choice == 4 then 
+        showUmbrella()
+    elseif choice == 5 then 
+        showTishert()
     end
+    gg.setVisible(false)
 end
 
 function showResortProducts()
-    local stayInMenu = true
-    while stayInMenu do
-        local choice = gg.choice({
-            "🐙 حيوانات المنتجع",
-            "🌂 آلات المنتجع",
-            "🧪 نافورة الوفرة",
-            "🔙 رجوع"
-        }, nil, "⛵ منتجات المنتجع")
-        
-        if choice == nil then 
-            stayInMenu = false
-        elseif choice == 1 then 
-            applyOption({41045, 41047, 41049, 41051})
-        elseif choice == 2 then 
-            showResortMachine()
-        elseif choice == 3 then 
-            showFountain()
-        elseif choice == 4 then 
-            stayInMenu = false
-        end
-        gg.setVisible(false)
+    local choice = gg.choice({
+        "🐙 حيوانات المنتجع",
+        "🌂 آلات المنتجع",
+        "🧪 نافورة الوفرة",
+        "🔙 رجوع"
+    }, nil, "⛵ منتجات المنتجع")
+    
+    if choice == 1 then 
+        applyOption({41045, 41047, 41049, 41051})
+    elseif choice == 2 then 
+        showResortMachine()
+    elseif choice == 3 then 
+        showFountain()
     end
 end
-
 
 
 
