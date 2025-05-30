@@ -608,104 +608,7 @@ function RESET_CLOUD_BOUTIQUE()
     gg.toast("✅ تم تصفير بوتيك السحاب 👗")
 end
 
-function SKY_SHOP()
-    local items = {
-        {"🔍 بحث يدوي+ فتح الكشك ", "MANUAL"},  
-        {"⚡ تفعيل كل العناصر", "ALL"},  
-        {"🏅 شارة المنطاد+المغامر", "306101~306102"},  
-        {"🍄 زرع السحاب", "304101~304106"},  
-        {"🍐 شجر السحاب", "303101~303105"},  
-        {"🍁 اعشاب السحاب", "9101001~9101024"},  
-        {"🍬 منتجات حيوانات السحاب", "302101~302104"},  
-        {"👗 فستان - 🍥 ماكرون - 🍹 شاي", "301101~301103"},  
-        {"👚 روب - 🥗 كعكة بازلاء - 🍷 مشروب غازي", "301201~301203"},  
-        {"🎀 بيريه - 🍮 جيلي الكريستال - 🥃 مصل قلنباق", "301301~301303"},  
-        {"🦇 اجنحة - 🎂 رخامية - ❄️ عصير جليدي", "301401~301403"},  
-        {"🏒 عصا - 🍩 دونات - 🍉 عصير بطيخ", "301501~301503"},  
-        {"🌸 حجاب", "301601"}
-    }
 
-    local function showMenu()
-        local names = {}
-        for _, v in ipairs(items) do
-            table.insert(names, v[1])
-        end
-        table.insert(names, "🔙 رجوع")
-        
-        return gg.multiChoice(names, nil, "☁️ متجر السحاب - اختيار متعدد ☁️")
-    end
-
-    while true do
-        local choices, isCancelled = showMenu()
-        
-        if isCancelled then
-            return -- يغلق القائمة عند الضغط خارجها
-        end
-
-        -- إذا تم اختيار زر الرجوع
-        if choices and choices[#items+1] then
-            CLOUD_ISLAND_MENU()
-            return
-        end
-
-        local anySelected = false
-        if choices then
-            for i = 1, #items do
-                if choices[i] then
-                    anySelected = true
-                    local code = items[i][2]
-                    local success = false
-                    
-                    gg.setVisible(false)
-                    gg.clearResults()
-                    
-                    if code == "MANUAL" then
-                        local input = gg.prompt({"أدخل الكود -- عدد منتجات الكشك المغلق:"}, nil, {"number"})
-                        if input and input[1] then
-                            gg.searchNumber(input[1], gg.TYPE_DOUBLE)
-                            local results = gg.getResults(100)
-                            if #results > 0 then
-                                for j, v in ipairs(results) do
-                                    v.value = 0
-                                    v.freeze = false
-                                end
-                                gg.setValues(results)
-                                gg.toast("تم فتح الكشك بنجاح ✓")
-                                success = true
-                            else
-                                gg.toast("⚠️ لم يتم العثور على القيمة")
-                            end
-                        end
-                    elseif code == "ALL" then
-                        local allSuccess = true
-                        for j = 3, #items do
-                            local range = items[j][2]
-                            if range:find('~') then
-                                local startCode, endCode = range:match('(%d+)~(%d+)')
-                                startCode = tonumber(startCode)
-                                endCode = tonumber(endCode)
-                                
-                                for code = startCode, endCode do
-                                    gg.searchNumber(code, gg.TYPE_DOUBLE)
-                                    local results = gg.getResults(100)
-                                    if #results > 0 then
-                                        for k, v in ipairs(results) do
-                                            v.value = 0
-                                            v.freeze = false
-                                        end
-                                        gg.setValues(results)
-                                    else
-                                        allSuccess = false
-                                    end
-                                    gg.clearResults()
-                                end
-                            else
-                                local code = tonumber(range)
-                                gg.searchNumber(code, gg.TYPE_DOUBLE)
-                                local results = gg.getResults(100)
-                                if #results > 0 then
-                                    for k, v in ipairs(results) do
-                                        v.value = 0
 function SKY_SHOP()  
     local items = {  
         {"🔍 بحث يدوي+ فتح الكشك ", "MANUAL"},    
@@ -873,6 +776,7 @@ function SKY_SHOP()
         end  
     end  
 end
+       
 
 --|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|--
 
