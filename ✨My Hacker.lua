@@ -608,115 +608,138 @@ function RESET_CLOUD_BOUTIQUE()
     gg.toast("✅ تم تصفير بوتيك السحاب 👗")
 end
 
+
 function SKY_SHOP()
+    gg.setVisible(false)
+    local choices = gg.multiChoice({
+        "✅ تفعيل الكل",
+        "🔍 بحث يدوي+ فتح الكشك",
+        "🏅 شارة المنطاد+المغامر",
+        "🍄 زرع السحاب",
+        "🍐 شجر السحاب",
+        "🍁 اعشاب السحاب",
+        "🍬 منتجات حيوانات السحاب",
+        "👗 فستان - 🍥 ماكرون - 🍹 شاي",
+        "👚 روب - 🥗 كعكة بازلاء - 🍷 مشروب غازي",
+        "🎀 بيريه - 🍮 جيلي الكريستال - 🥃 مصل قلنباق",
+        "🦇 اجنحة - 🎂 رخامية - ❄️ عصير جليدي",
+        "🏒 عصا - 🍩 دونات - 🍉 عصير بطيخ",
+        "🌸 حجاب",
+        "↩️ رجوع"
+    }, nil, "☁️ متجر السحاب - اختيار متعدد ☁️")
+
+    if not choices then return end
+    
+    if choices[14] then
+        CLOUD_ISLAND_MENU()
+        return
+    end
+    
+    if choices[1] then
+        for i = 2, 13 do
+            choices[i] = true
+        end
+    end
+
     local items = {
-        {"🔍 بحث يدوي+ فتح الكشك ", "MANUAL"},
-        {"⚡ تفعيل كل العناصر", "ALL"},
-        {"🏅 شارة المنطاد+المغامر", "306101~306102"},
-        {"🍄 زرع السحاب", "304101~304106"},
-        {"🍐 شجر السحاب", "303101~303105"},
-        {"🍁 اعشاب السحاب", "9101001~9101024"},
-        {"🍬 منتجات حيوانات السحاب", "302101~302104"},
-        {"👗 فستان - 🍥 ماكرون - 🍹 شاي", "301101~301103"},
-        {"👚 روب - 🥗 كعكة بازلاء - 🍷 مشروب غازي", "301201~301203"},
-        {"🎀 بيريه - 🍮 جيلي الكريستال - 🥃 مصل قلنباق", "301301~301303"},
-        {"🦇 اجنحة - 🎂 رخامية - ❄️ عصير جليدي", "301401~301403"},
-        {"🏒 عصا - 🍩 دونات - 🍉 عصير بطيخ", "301501~301503"},
-        {"🌸 حجاب", "301601"}
+        {search="MANUAL"}, -- البحث اليدوي
+        {search="306101~306102"},
+        {search="304101~304106"},
+        {search="303101~303105"},
+        {search="9101001~9101024"},
+        {search="302101~302104"},
+        {search="301101~301103"},
+        {search="301201~301203"},
+        {search="301301~301303"},
+        {search="301401~301403"},
+        {search="301501~301503"},
+        {search="301601"}
     }
 
-    local menu = {}
-    for i = 1, #items do
-        table.insert(menu, items[i][1])
-    end
-    table.insert(menu, "🔙 رجوع")
-
-    local choice = gg.choice(menu, nil, "☁️ متجر السحاب ☁️")
-    if not choice then return
-    end
-
-    local code = items[choice][2]
-    local function activateCode(code)
-        if code:find("~") then
-            local startCode, endCode = code:match("(%d+)~(%d+)")
-            startCode = tonumber(startCode)
-            endCode = tonumber(endCode)
-            local found = false
-            for c = startCode, endCode do
-                gg.searchNumber(c .. "::0", gg.TYPE_DOUBLE)
-                local results = gg.getResults(100)
-                if #results > 0 then
-                    for i, v in ipairs(results) do
-                        v.value = 0
-                        v.freeze = false
+    local modified = false
+    
+    for i = 2, 13 do
+        if choices[i] then
+            local item = items[i-1]
+            gg.clearResults()
+            
+            if item.search == "MANUAL" then
+                local input = gg.prompt({"أدخل الكود -- عدد منتجات الكشك المغلق:"}, nil, {"number"})
+                if input and input[1] then
+                    gg.searchNumber(input[1], gg.TYPE_DOUBLE)
+                    local results = gg.getResults(100)
+                    if #results > 0 then
+                        for j, v in ipairs(results) do
+                            v.value = 0
+                            v.freeze = false
+                        end
+                        gg.setValues(results)
+                        modified = true
+                        gg.toast("تم فتح الكشك بنجاح ✓")
+                    else
+                        gg.toast("⚠️ لم يتم العثور على القيمة")
                     end
-                    gg.setValues(results)
-                    found = true
                 end
-                gg.clearResults()
-            end
-            return found
-        else
-            local num = tonumber(code)
-            if num then
-                gg.searchNumber(num .. "::0", gg.TYPE_DOUBLE)
-                local results = gg.getResults(100)
-                if #results > 0 then
-                    for i, v in ipairs(results) do
-                        v.value = 0
-                        v.freeze = false
-                    end
-                    gg.setValues(results)
-                    gg.clearResults()
-                    return true
-                end
-                gg.clearResults()
-            end
-        end
-        return false
-    end
-
-    if code == "MANUAL" then
-        local input = gg.prompt({"أدخل الكود:"}, nil, {"number"})
-        if input and input[1] then
-            gg.searchNumber(input[1] .. "::0", gg.TYPE_DOUBLE)
-            local results = gg.getResults(100)
-            if #results > 0 then
-                for i, v in ipairs(results) do
-                    v.value = 0
-                    v.freeze = false
-                end
-                gg.setValues(results)
-                gg.toast("✅ تم فتح الكشك بنجاح")
             else
-                gg.toast("⚠️ لم يتم العثور على القيمة")
+                if item.search:find('~') then
+                    local startCode, endCode = item.search:match('(%d+)~(%d+)')
+                    startCode = tonumber(startCode)
+                    endCode = tonumber(endCode)
+                    local partSuccess = false
+                    
+                    for code = startCode, endCode do
+                        gg.searchNumber(code, gg.TYPE_DOUBLE)
+                        local results = gg.getResults(100)
+                        if #results > 0 then
+                            for j, v in ipairs(results) do
+                                v.value = 0
+                                v.freeze = false
+                            end
+                            gg.setValues(results)
+                            partSuccess = true
+                        end
+                        gg.clearResults()
+                    end
+                    
+                    if partSuccess then
+                        modified = true
+                        gg.toast("تم التفعيل بنجاح ✓")
+                    else
+                        gg.toast("⚠️ فشل في التفعيل")
+                    end
+                else
+                    local numCode = tonumber(item.search)
+                    gg.searchNumber(numCode, gg.TYPE_DOUBLE)
+                    local results = gg.getResults(100)
+                    if #results > 0 then
+                        for j, v in ipairs(results) do
+                            v.value = 0
+                            v.freeze = false
+                        end
+                        gg.setValues(results)
+                        modified = true
+                        gg.toast("تم التفعيل بنجاح ✓")
+                    else
+                        gg.toast("⚠️ لم يتم العثور على العنصر")
+                    end
+                end
             end
             gg.clearResults()
         end
-    elseif code == "ALL" then
-        local allSuccess = true
-        for i = 3, #items do
-            local success = activateCode(items[i][2])
-            if not success then
-                allSuccess = false
-            end
-        end
-        gg.toast(allSuccess and "✅ تم تفعيل جميع العناصر" or "⚠️ تم تفعيل بعض العناصر فقط")
-    else
-        local success = activateCode(code)
-        if success then
-            gg.toast("✅ تم تفعيل: " .. items[choice][1])
-        else
-            gg.toast("⚠️ لم يتم العثور على: " .. items[choice][1])
-        end
     end
 
-    gg.setVisible(false)
+    if modified then
+        gg.toast("✅ تم تفعيل العناصر المحددة بنجاح")
+    else
+        gg.toast("⚠️ لم يتم تعديل أي عنصر")
+    end
 end
 
 function OnGameButtonPressed()
     SKY_SHOP()
 end
+
+
 
 --|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|•|--
 
