@@ -632,13 +632,7 @@ function SKY_SHOP()
     table.insert(menu, "🔙 رجوع")
 
     local choice = gg.choice(menu, nil, "☁️ متجر السحاب ☁️")
-
-    if not choice then
-        gg.setVisible(false)
-        return
-    elseif choice == #menu then
-        CLOUD_ISLAND_MENU()
-        return
+    if not choice then return
     end
 
     local code = items[choice][2]
