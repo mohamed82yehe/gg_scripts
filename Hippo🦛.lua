@@ -42,14 +42,8 @@ local revert = nil
 
 gg.setVisible(false)
 gg.clearResults()
-gg.searchNumber("8245935277855761735", gg.TYPE_QWORD, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.searchNumber("200;20;5", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
+gg.refineNumber("5", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
 revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
-gg.editAll("0", gg.TYPE_QWORD)
-
-gg.clearResults()
-gg.setVisible(false)
-gg.searchNumber("1500;20", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
-gg.refineNumber("20", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1, 0)
-revert = gg.getResults(100000, nil, nil, nil, nil, nil, nil, nil, nil)
-gg.editAll("999999", gg.TYPE_DOUBLE)
+gg.editAll("0", gg.TYPE_DOUBLE)
 gg.clearResults()
