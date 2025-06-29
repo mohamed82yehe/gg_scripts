@@ -625,40 +625,49 @@ function SKY_SHOP()
         "🦇 اجنحة - 🎂 رخامية - ❄️ عصير جليدي",
         "🏒 عصا - 🍩 دونات - 🍉 عصير بطيخ",
         "🌸 حجاب",
+        "🌿 أعشاب وكريستالات جديدة",
+        "🍽️ وصفات طاولة طعام السحاب",
+        "🧂 توابل ومدق السحاب",
+        "🔥 منتجات مصهر السحاب",
         "↩️ رجوع"
     }, nil, "☁️ متجر السحاب - اختيار متعدد ☁️")
 
     if not choices then return end
     
-    if choices[14] then
+    if choices[18] then
         CLOUD_ISLAND_MENU()
         return
     end
     
     if choices[1] then
-        for i = 2, 13 do
+        for i = 2, 17 do
             choices[i] = true
         end
     end
 
     local items = {
-        {search="MANUAL"}, -- البحث اليدوي
-        {search="306101~306102"},
-        {search="304101~304106"},
-        {search="303101~303105"},
-        {search="9101001~9101024"},
-        {search="302101~302104"},
-        {search="301101~301103"},
-        {search="301201~301203"},
-        {search="301301~301303"},
-        {search="301401~301403"},
-        {search="301501~301503"},
-        {search="301601"}
+        {search="MANUAL"}, -- 2
+        {search="306101~306102"}, -- 3
+        {search="304101~304106"}, -- 4
+        {search="303101~303105"}, -- 5
+        {search="9101001~9101024"}, -- 6
+        {search="302101~302104"}, -- 7
+        {search="301101~301103"}, -- 8
+        {search="301201~301203"}, -- 9
+        {search="301301~301303"}, -- 10
+        {search="301401~301403"}, -- 11
+        {search="301501~301503"}, -- 12
+        {search="301601"},         -- 13
+        {search="9101021~9101027"}, -- 14
+        {search="3951001~3951020"}, -- 15
+        {search={"307101","307201","307301","307401","307501","307601"}}, -- 16
+        {search={"307102","307202","307302","307402","307502","307602",
+                 "307702","307802","307902","317102","317202","317302","317402"}} -- 17
     }
 
     local modified = false
     
-    for i = 2, 13 do
+    for i = 2, 17 do
         if choices[i] then
             local item = items[i-1]
             gg.clearResults()
@@ -680,36 +689,14 @@ function SKY_SHOP()
                         gg.toast("⚠️ لم يتم العثور على القيمة")
                     end
                 end
-            else
-                if item.search:find('~') then
-                    local startCode, endCode = item.search:match('(%d+)~(%d+)')
-                    startCode = tonumber(startCode)
-                    endCode = tonumber(endCode)
-                    local partSuccess = false
-                    
-                    for code = startCode, endCode do
-                        gg.searchNumber(code, gg.TYPE_DOUBLE)
-                        local results = gg.getResults(100)
-                        if #results > 0 then
-                            for j, v in ipairs(results) do
-                                v.value = 0
-                                v.freeze = false
-                            end
-                            gg.setValues(results)
-                            partSuccess = true
-                        end
-                        gg.clearResults()
-                    end
-                    
-                    if partSuccess then
-                        modified = true
-                        gg.toast("تم التفعيل بنجاح ✓")
-                    else
-                        gg.toast("⚠️ فشل في التفعيل")
-                    end
-                else
-                    local numCode = tonumber(item.search)
-                    gg.searchNumber(numCode, gg.TYPE_DOUBLE)
+            elseif type(item.search) == "string" and item.search:find('~') then
+                local startCode, endCode = item.search:match('(%d+)~(%d+)')
+                startCode = tonumber(startCode)
+                endCode = tonumber(endCode)
+                local partSuccess = false
+                
+                for code = startCode, endCode do
+                    gg.searchNumber(code, gg.TYPE_DOUBLE)
                     local results = gg.getResults(100)
                     if #results > 0 then
                         for j, v in ipairs(results) do
@@ -717,11 +704,52 @@ function SKY_SHOP()
                             v.freeze = false
                         end
                         gg.setValues(results)
-                        modified = true
-                        gg.toast("تم التفعيل بنجاح ✓")
-                    else
-                        gg.toast("⚠️ لم يتم العثور على العنصر")
+                        partSuccess = true
                     end
+                    gg.clearResults()
+                end
+                
+                if partSuccess then
+                    modified = true
+                    gg.toast("تم التفعيل بنجاح ✓")
+                else
+                    gg.toast("⚠️ فشل في التفعيل")
+                end
+            elseif type(item.search) == "table" then
+                local partSuccess = false
+                for _, code in ipairs(item.search) do
+                    gg.searchNumber(code, gg.TYPE_DOUBLE)
+                    local results = gg.getResults(100)
+                    if #results > 0 then
+                        for j, v in ipairs(results) do
+                            v.value = 0
+                            v.freeze = false
+                        end
+                        gg.setValues(results)
+                        partSuccess = true
+                    end
+                    gg.clearResults()
+                end
+                if partSuccess then
+                    modified = true
+                    gg.toast("تم التفعيل بنجاح ✓")
+                else
+                    gg.toast("⚠️ فشل في التفعيل")
+                end
+            else
+                local numCode = tonumber(item.search)
+                gg.searchNumber(numCode, gg.TYPE_DOUBLE)
+                local results = gg.getResults(100)
+                if #results > 0 then
+                    for j, v in ipairs(results) do
+                        v.value = 0
+                        v.freeze = false
+                    end
+                    gg.setValues(results)
+                    modified = true
+                    gg.toast("تم التفعيل بنجاح ✓")
+                else
+                    gg.toast("⚠️ لم يتم العثور على العنصر")
                 end
             end
             gg.clearResults()
