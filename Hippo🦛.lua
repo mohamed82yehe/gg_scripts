@@ -3,7 +3,7 @@ gg.setVisible(false)
 gg.clearResults()
 
 -- البحث عن القيم الثلاثة 200;20;5 من نوع DOUBLE
-gg.searchNumber("1;20;1500", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1)
+gg.searchNumber("1;20;700051", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1)
 
 -- حفظ كل النتائج في متغير
 local allResults = gg.getResults(1000)
