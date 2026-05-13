@@ -27,33 +27,3 @@ gg.setValues(r2)
 
 gg.clearResults()
 gg.toast("تم 🔥")
-
-gg.setVisible(false)
-gg.clearResults()
-
-gg.searchNumber("1;4000;590147", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1)
-
-gg.refineNumber("1", gg.TYPE_DOUBLE)
-local r2 = gg.getResults(100)
-for i = 1, #r2 do
-  r2[i].value = 0
-end
-gg.setValues(r2)
-
-gg.clearResults()
-gg.toast("تم 🔥")
-
-gg.setVisible(false)
-gg.clearResults()
-
-gg.searchNumber("1;12000;590128", gg.TYPE_DOUBLE, false, gg.SIGN_EQUAL, 0, -1)
-
-gg.refineNumber("1", gg.TYPE_DOUBLE)
-local r2 = gg.getResults(100)
-for i = 1, #r2 do
-  r2[i].value = 0
-end
-gg.setValues(r2)
-
-gg.clearResults()
-gg.toast("تم 🔥")
